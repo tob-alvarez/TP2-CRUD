@@ -1,0 +1,5 @@
+/* Estilos mínimos sobre Bootstrap */
+
+.nav-tabs .nav-link {
+  cursor: pointer;
+}

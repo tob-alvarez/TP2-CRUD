@@ -1,0 +1,77 @@
+{
+  "movimientos": [
+    {
+      "id": "1",
+      "descripcion": "Salario mensual",
+      "monto": 150000,
+      "tipo": "ingreso",
+      "categoria": "Trabajo",
+      "fecha": "2026-06-01"
+    },
+    {
+      "id": "2",
+      "descripcion": "Alquiler departamento",
+      "monto": 45000,
+      "tipo": "gasto",
+      "categoria": "Vivienda",
+      "fecha": "2026-06-02"
+    },
+    {
+      "id": "3",
+      "descripcion": "Supermercado",
+      "monto": 12500,
+      "tipo": "gasto",
+      "categoria": "Alimentación",
+      "fecha": "2026-06-03"
+    },
+    {
+      "id": "4",
+      "descripcion": "Freelance diseño web",
+      "monto": 35000,
+      "tipo": "ingreso",
+      "categoria": "Freelance",
+      "fecha": "2026-06-05"
+    },
+    {
+      "id": "5",
+      "descripcion": "Netflix",
+      "monto": 2400,
+      "tipo": "gasto",
+      "categoria": "Entretenimiento",
+      "fecha": "2026-06-06"
+    },
+    {
+      "id": "6",
+      "descripcion": "Transporte público",
+      "monto": 3200,
+      "tipo": "gasto",
+      "categoria": "Transporte",
+      "fecha": "2026-06-07"
+    },
+    {
+      "id": "7",
+      "descripcion": "Dividendos inversión",
+      "monto": 8000,
+      "tipo": "ingreso",
+      "categoria": "Inversiones",
+      "fecha": "2026-06-08"
+    },
+    {
+      "id": "8",
+      "descripcion": "Gym mensualidad",
+      "monto": 5500,
+      "tipo": "gasto",
+      "categoria": "Salud",
+      "fecha": "2026-06-09"
+    },
+    {
+      "descripcion": "Mapa Municipal",
+      "monto": 2333,
+      "tipo": "ingreso",
+      "categoria": "Freelance",
+      "fecha": "2026-06-10",
+      "id": "kKhksXjeSoM"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
