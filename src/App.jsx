@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import MovimientoForm from './components/MovimientoForm';
@@ -10,63 +10,34 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './App.css';
 
 function App() {
-  const [movimientos, setMovimientos] = useState([]);
+  const [movimientos, setMovimientos] = useState(movimientoService.getAll());
   const [movimientoEditado, setMovimientoEditado] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [vista, setVista] = useState('dashboard'); // 'dashboard' | 'movimientos'
+  const [vista, setVista] = useState('dashboard');
   const [toast, setToast] = useState(null);
 
-  const showToast = useCallback((message, type = 'success') => {
+  const showToast = (message, type = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
-  }, []);
-
-  const cargarMovimientos = useCallback(async () => {
-    try {
-      const data = await movimientoService.getAll();
-      setMovimientos(Array.isArray(data) ? data : []);
-    } catch {
-      showToast('Error al cargar los movimientos. ¿Está corriendo el backend?', 'error');
-    } finally {
-      setLoading(false);
-    }
-  }, [showToast]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    cargarMovimientos();
-  }, [cargarMovimientos]);
-
-  const handleCrear = async (nuevoMovimiento) => {
-    try {
-      const creado = await movimientoService.create(nuevoMovimiento);
-      setMovimientos((prev) => [...prev, creado]);
-      showToast('Movimiento creado exitosamente.');
-    } catch {
-      showToast('Error al crear el movimiento.', 'error');
-    }
   };
 
-  const handleActualizar = async (movimientoActualizado) => {
-    try {
-      const actualizado = await movimientoService.update(movimientoEditado.id, movimientoActualizado);
-      setMovimientos((prev) => prev.map((m) => (m.id === actualizado.id ? actualizado : m)));
-      setMovimientoEditado(null);
-      showToast('Movimiento actualizado exitosamente.');
-    } catch {
-      showToast('Error al actualizar el movimiento.', 'error');
-    }
+  const handleCrear = (nuevoMovimiento) => {
+    const creado = movimientoService.create(nuevoMovimiento);
+    setMovimientos([...movimientos, creado]);
+    showToast('Movimiento creado exitosamente.');
   };
 
-  const handleEliminar = async (id) => {
+  const handleActualizar = (movimientoActualizado) => {
+    const actualizado = movimientoService.update(movimientoEditado.id, movimientoActualizado);
+    setMovimientos(movimientos.map((m) => (m.id === actualizado.id ? actualizado : m)));
+    setMovimientoEditado(null);
+    showToast('Movimiento actualizado exitosamente.');
+  };
+
+  const handleEliminar = (id) => {
     if (!window.confirm('¿Estás seguro de que deseas eliminar este movimiento?')) return;
-    try {
-      await movimientoService.delete(id);
-      setMovimientos((prev) => prev.filter((m) => m.id !== id));
-      showToast('Movimiento eliminado.');
-    } catch {
-      showToast('Error al eliminar el movimiento.', 'error');
-    }
+    movimientoService.delete(id);
+    setMovimientos(movimientos.filter((m) => m.id !== id));
+    showToast('Movimiento eliminado.');
   };
 
   const handleEditar = (movimiento) => {
@@ -81,9 +52,10 @@ function App() {
 
   const handleSubmitForm = (data) => {
     if (movimientoEditado) {
-      return handleActualizar(data);
+      handleActualizar(data);
+    } else {
+      handleCrear(data);
     }
-    return handleCrear(data);
   };
 
   return (
@@ -91,7 +63,6 @@ function App() {
       <Navbar totalMovimientos={movimientos.length} />
 
       <div className="container py-4">
-        {/* Tabs */}
         <ul className="nav nav-tabs mb-4">
           <li className="nav-item">
             <button
@@ -117,7 +88,6 @@ function App() {
           <div className="row g-4">
             <div className="col-12 col-lg-4">
               <MovimientoForm
-                key={movimientoEditado?.id ?? 'nuevo'}
                 onSubmit={handleSubmitForm}
                 movimientoEditado={movimientoEditado}
                 onCancelEdit={handleCancelEdit}
@@ -128,7 +98,6 @@ function App() {
                 movimientos={movimientos}
                 onEditar={handleEditar}
                 onEliminar={handleEliminar}
-                loading={loading}
               />
             </div>
           </div>

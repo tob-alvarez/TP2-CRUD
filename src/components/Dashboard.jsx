@@ -10,7 +10,6 @@ const Dashboard = ({ movimientos = [] }) => {
 
   const ingresos = movimientosArray.filter((m) => m.tipo === 'ingreso').reduce((acc, m) => acc + m.monto, 0);
   const gastos = movimientosArray.filter((m) => m.tipo === 'gasto').reduce((acc, m) => acc + m.monto, 0);
-  const balance = ingresos - gastos;
 
   // Top categorías de gasto
   const categoriaGastos = movimientosArray
@@ -33,8 +32,6 @@ const Dashboard = ({ movimientos = [] }) => {
       <ResumenFinanciero
         ingresos={ingresos}
         gastos={gastos}
-        balance={balance}
-        totalMovimientos={movimientosArray.length}
       />
 
       <div className="row g-3">

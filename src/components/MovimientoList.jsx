@@ -1,20 +1,18 @@
 import { useState } from 'react';
 import MovimientoItem from './MovimientoItem';
 
-const MovimientoList = ({ movimientos = [], onEditar, onEliminar, loading }) => {
+const MovimientoList = ({ movimientos = [], onEditar, onEliminar }) => {
   const [filtro, setFiltro] = useState('todos');
   const [busqueda, setBusqueda] = useState('');
   const [ordenDesc, setOrdenDesc] = useState(true);
 
-  const movimientosArray = Array.isArray(movimientos) ? movimientos : [];
-
-  const movimientosFiltrados = movimientosArray
+  const movimientosFiltrados = movimientos
     .filter((m) => {
       const matchFiltro = filtro === 'todos' || m.tipo === filtro;
       const texto = busqueda.toLowerCase();
       const matchBusqueda =
-        (m.descripcion || '').toLowerCase().includes(texto) ||
-        (m.categoria || '').toLowerCase().includes(texto);
+        m.descripcion.toLowerCase().includes(texto) ||
+        m.categoria.toLowerCase().includes(texto);
       return matchFiltro && matchBusqueda;
     })
     .sort((a, b) => {
@@ -29,7 +27,7 @@ const MovimientoList = ({ movimientos = [], onEditar, onEliminar, loading }) => 
           <i className="bi bi-list-check me-2"></i>
           Movimientos
           <span className="text-muted fw-normal ms-2 small">
-            ({movimientosFiltrados.length} de {movimientosArray.length})
+            ({movimientosFiltrados.length} de {movimientos.length})
           </span>
         </span>
         <button
@@ -78,12 +76,7 @@ const MovimientoList = ({ movimientos = [], onEditar, onEliminar, loading }) => 
         </div>
 
         {/* Tabla */}
-        {loading ? (
-          <div className="text-center py-5">
-            <div className="spinner-border text-primary" role="status"></div>
-            <div className="text-muted mt-2">Cargando movimientos...</div>
-          </div>
-        ) : movimientosFiltrados.length === 0 ? (
+        {movimientosFiltrados.length === 0 ? (
           <p className="text-muted text-center py-4 mb-0">
             {busqueda || filtro !== 'todos'
               ? 'No se encontraron movimientos con ese filtro.'
@@ -94,17 +87,17 @@ const MovimientoList = ({ movimientos = [], onEditar, onEliminar, loading }) => 
             <table className="table table-hover align-middle mb-0">
               <thead>
                 <tr>
-                  <th>Descripción</th>
-                  <th>Categoría</th>
                   <th>Fecha</th>
+                  <th>Categoría</th>
+                  <th>Descripción</th>
                   <th className="text-end">Monto</th>
                   <th className="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                {movimientosFiltrados.map((movimiento, index) => (
+                {movimientosFiltrados.map((movimiento) => (
                   <MovimientoItem
-                    key={movimiento.id ?? `movimiento-${index}`}
+                    key={movimiento.id}
                     movimiento={movimiento}
                     onEditar={onEditar}
                     onEliminar={onEliminar}

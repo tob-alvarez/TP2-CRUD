@@ -13,14 +13,14 @@ const MovimientoItem = ({ movimiento, onEditar, onEliminar }) => {
 
   return (
     <tr>
+      <td className="text-muted small">{formatFecha(fecha)}</td>
+      <td><span className="badge text-bg-light border">{categoria}</span></td>
       <td>
         <span className={`badge me-2 ${esIngreso ? 'text-bg-success' : 'text-bg-danger'}`}>
           <i className={`bi bi-arrow-${esIngreso ? 'down' : 'up'}-circle`}></i>
         </span>
         {descripcion}
       </td>
-      <td><span className="badge text-bg-light border">{categoria}</span></td>
-      <td className="text-muted small">{formatFecha(fecha)}</td>
       <td className={`text-end fw-semibold ${esIngreso ? 'text-success' : 'text-danger'}`}>
         {esIngreso ? '+' : '-'}{formatMonto(monto)}
       </td>
